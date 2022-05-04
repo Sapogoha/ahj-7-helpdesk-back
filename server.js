@@ -84,10 +84,29 @@ app.use(async (ctx) => {
         return;
     }
   } else if (requestMethod === 'POST') {
-    if (method === 'createTicket') {
-      ctx.response.body = createNewTicket(ctx.request.body);
-    } else {
-      ctx.response.status = 404;
+    switch (method) {
+      case 'createTicket':
+        ctx.response.body = createNewTicket(ctx.request.body);
+        return;
+      default:
+        ctx.response.status = 404;
+        return;
+    }
+  } else if (requestMethod === 'PUT') {
+    switch (method) {
+      case 'byId':
+        const ticketId = Number(ctx.params.id);
+        const { name, description } = ctx.request.body;
+
+        const ticket = this.tickets.find((ticket) => ticket.id === ticketId);
+        ticket.name = name;
+        ticket.description = description;
+        ctx.response.status = 204;
+        return;
+
+      default:
+        ctx.response.status = 404;
+        return;
     }
   }
 });
