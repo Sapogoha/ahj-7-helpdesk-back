@@ -44,18 +44,18 @@ function createNewTicket(params) {
   }
 }
 
-function editTicket(params) {
-  try {
-    const { id, name, description } = params;
-    const ticket = this.tickets.find((t) => t.id === id);
-    ticket.name = name;
-    ticket.description = description;
-    tickets.push(ticket);
-    return true;
-  } catch (err) {
-    return err.message;
-  }
-}
+// function editTicket(params) {
+//   try {
+//     const { id, name, description } = params;
+//     const ticket = this.tickets.find((t) => t.id === id);
+//     ticket.name = name;
+//     ticket.description = description;
+//     tickets.push(ticket);
+//     return true;
+//   } catch (err) {
+//     return err.message;
+//   }
+// }
 
 const app = new Koa();
 const port = process.env.PORT || 7070;
@@ -101,9 +101,24 @@ app.use(async (ctx) => {
       case 'createTicket':
         ctx.response.body = createNewTicket(ctx.request.body);
         return;
-      case 'editById':
-        ctx.response.body = editTicket(ctx.request.body);
+      // case 'editById':
+      //   ctx.response.body = editTicket(ctx.request.body);
+      //   return;
+      default:
+        ctx.response.status = 404;
         return;
+    }
+  } else if (requestMethod === 'PUT') {
+    switch (method) {
+      case 'editById':
+        const { name, description } = ctx.request.body;
+
+        const ticket = this.tickets.find((ticket) => ticket.id === id);
+        ticket.name = name;
+        ticket.description = description;
+        ctx.response.status = 204;
+        return;
+
       default:
         ctx.response.status = 404;
         return;
