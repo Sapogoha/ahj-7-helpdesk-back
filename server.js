@@ -112,8 +112,9 @@ app.use(async (ctx) => {
     switch (method) {
       case 'editById':
         const { name, description } = ctx.request.body;
+        const thisId = ctx.request.body.id;
 
-        const ticket = this.tickets.find((ticket) => ticket.id === id);
+        const ticket = this.tickets.find((ticket) => ticket.id === thisId);
         ticket.name = name;
         ticket.description = description;
         ctx.response.status = 204;
