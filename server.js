@@ -124,6 +124,22 @@ app.use(async (ctx) => {
         ctx.response.status = 404;
         return;
     }
+  } else if (requestMethod === 'DELETE') {
+    switch (method) {
+      case 'remove':
+        const { name, description } = ctx.request.body;
+        const thisId = ctx.request.body.id;
+
+        const ticket = this.tickets.find((ticket) => ticket.id === thisId);
+        ticket.name = name;
+        ticket.description = description;
+        ctx.response.status = 204;
+        return;
+
+      default:
+        ctx.response.status = 404;
+        return;
+    }
   }
 });
 
