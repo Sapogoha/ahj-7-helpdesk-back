@@ -13,21 +13,21 @@ const tickets = [
     name: 'Sample task 1',
     description: 'Additional info 1',
     status: true,
-    created: new Date(),
+    created: '1651597184204',
   },
   {
     id: '2',
     name: 'Sample task 2',
     description: 'Additional info 2',
     status: false,
-    created: new Date(),
+    created: '1651597184204',
   },
   {
     id: uuid(),
     name: 'Sample task 3',
     description: 'Additional info 3',
     status: false,
-    created: new Date(),
+    created: '1651597184204',
   },
 ];
 
@@ -35,7 +35,7 @@ function createNewTicket(params) {
   try {
     const { name, description } = params;
     const id = uuid();
-    const created = new Date();
+    const created = Date.now();
     const status = false;
     tickets.push({ id, name, description, status, created });
     return true;
