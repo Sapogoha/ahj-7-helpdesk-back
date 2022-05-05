@@ -127,12 +127,9 @@ app.use(async (ctx) => {
   } else if (requestMethod === 'DELETE') {
     switch (method) {
       case 'remove':
-        const { name, description } = ctx.request.body;
-        const thisId = ctx.request.body.id;
+        const ticket = this.tickets.find((ticket) => ticket.id === id);
+        tickets.splice(ticket, 1);
 
-        const ticket = this.tickets.find((ticket) => ticket.id === thisId);
-        ticket.name = name;
-        ticket.description = description;
         ctx.response.status = 204;
         return;
 
