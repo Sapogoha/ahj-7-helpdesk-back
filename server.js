@@ -13,21 +13,21 @@ const tickets = [
     name: 'Sample task 1',
     description: 'Additional info 1',
     status: true,
-    created: '1651597184204',
+    created: 1651597184204,
   },
   {
     id: '2',
     name: 'Sample task 2',
     description: 'Additional info 2',
     status: false,
-    created: '1651597184204',
+    created: 1651597184204,
   },
   {
     id: uuid(),
     name: 'Sample task 3',
     description: 'Additional info 3',
     status: false,
-    created: '1651597184204',
+    created: 1651597184204,
   },
 ];
 
@@ -43,19 +43,6 @@ function createNewTicket(params) {
     return err.message;
   }
 }
-
-// function editTicket(params) {
-//   try {
-//     const { id, name, description } = params;
-//     const ticket = this.tickets.find((t) => t.id === id);
-//     ticket.name = name;
-//     ticket.description = description;
-//     tickets.push(ticket);
-//     return true;
-//   } catch (err) {
-//     return err.message;
-//   }
-// }
 
 const app = new Koa();
 const port = process.env.PORT || 7070;
@@ -81,7 +68,6 @@ app.use(
 );
 
 app.use(async (ctx) => {
-  console.log(ctx);
   const requestMethod = ctx.request.method;
   const { method, id } = ctx.request.query;
 
@@ -91,7 +77,9 @@ app.use(async (ctx) => {
         ctx.response.body = tickets;
         return;
       case 'ticketById':
-        ctx.response.body = tickets.find((ticket) => ticket.id === id);
+        console.log(tickets);
+        console.log(id);
+        ctx.response.body = tickets.find((t) => t.id === id);
         return;
       default:
         ctx.response.status = 404;
@@ -102,25 +90,25 @@ app.use(async (ctx) => {
       case 'createTicket':
         ctx.response.body = createNewTicket(ctx.request.body);
         return;
-      // case 'editById':
-      //   ctx.response.body = editTicket(ctx.request.body);
-      //   return;
       default:
         ctx.response.status = 404;
         return;
     }
   } else if (requestMethod === 'PUT') {
+    const ticket = this.tickets.find((t) => t.id === id);
+
     switch (method) {
       case 'editById':
         const { name, description } = ctx.request.body;
-        const thisId = ctx.request.body.id;
 
-        const ticket = this.tickets.find((ticket) => ticket.id === thisId);
         ticket.name = name;
         ticket.description = description;
         ctx.response.status = 204;
         return;
-
+      case 'changeStatus':
+        ticket.status ? (ticket.status = false) : (ticket.status = true);
+        ctx.response.status = 204;
+        return;
       default:
         ctx.response.status = 404;
         return;
@@ -128,10 +116,8 @@ app.use(async (ctx) => {
   } else if (requestMethod === 'DELETE') {
     switch (method) {
       case 'remove':
-        const ticket = this.tickets.find((ticket) => ticket.id === id);
-        tickets.splice(ticket, 1);
-
-        console.log(tickets);
+        const tickett = this.tickets.find((t) => t.id === id);
+        tickets.splice(tickett, 1);
 
         ctx.response.status = 204;
         return;
