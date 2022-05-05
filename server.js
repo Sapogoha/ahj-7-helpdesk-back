@@ -81,6 +81,7 @@ app.use(
 );
 
 app.use(async (ctx) => {
+  console.log(ctx);
   const requestMethod = ctx.request.method;
   const { method, id } = ctx.request.query;
 
@@ -129,6 +130,8 @@ app.use(async (ctx) => {
       case 'remove':
         const ticket = this.tickets.find((ticket) => ticket.id === id);
         tickets.splice(ticket, 1);
+
+        console.log(tickets);
 
         ctx.response.status = 204;
         return;
