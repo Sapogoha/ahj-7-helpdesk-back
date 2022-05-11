@@ -94,7 +94,6 @@ router.put('/tickets', async (ctx) => {
     ticket.name = name;
     ticket.description = description;
   } else if (method === 'changeStatus') {
-    console.log(ticket.status);
     ticket.status ? (ticket.status = false) : (ticket.status = true);
   }
 
